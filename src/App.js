@@ -43,6 +43,14 @@ const getAccount = async userId => {
     return db.collection('accounts').doc(user.accounts).get();
 };
 
+const readIds = async (collection, ids) => {
+    const reads = ids.map(id => collection.doc(id).get());
+    const result = await Promise.all(reads);
+    return result.map(v => v.data());
+};
+
+readIds(db.collection('products'), ['foo', 'bar', 'baz']);
+
 function App() {
     const [data, setData] = React.useState([]);
     const [account, setAccount] = React.useState('');
